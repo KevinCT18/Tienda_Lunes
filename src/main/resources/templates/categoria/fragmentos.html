@@ -7,6 +7,7 @@
         <meta charset="UTF-8"/> 
     </head>
     <body>
+
         <!-- 1 seccion donde se muestra el botón de agregar categorías -->
         <section th:fragment="btnAgregar" class="py-4 mb-4 bg-light">
             <div class="container">
@@ -18,7 +19,7 @@
                                 data-bs-target="#agregarCategoria">
                             <i class="fas fa-plus"></i> [[#{categoria.agregar}]]
                         </button>
-                    </div>>
+                    </div>
                 </div>
             </div>
         </section>
@@ -45,18 +46,25 @@
                                            name="descripcion"
                                            required="true"/>
                                 </div>
+
                                 <div class="mb-3">
                                     <label>[[#{categoria.activo}]]</label>
                                     <input type="checkbox" class="form-check-input"
                                            name="activo"/>
                                 </div>
+
+                                <div class="mb-3">
+                                    <label>[[#{categoria.rutaImagen}]]</label>
+                                    <input type="file" class="form-control"
+                                           onchange="readURL(this);"
+                                           name="imagenFile"/>
+                                    <img id="blah" src="#" alt="no data" height="200"/>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label>[[#{categoria.rutaImagen}]]</label>
-                                <input type="file" class="form-control"
-                                       onchange="readURL(this);"
-                                       name="imagenFile"/>
-                                <img id="blah" src="#" alt="no data" height="200"/>
+                            <div class="modal-footer">
+                                <button class="btn btn-pimary" type="submit">
+                                    <i class="fas fa-floppy" aria-hidden="true"></i> [[#{accion.guardar}]]
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -79,16 +87,17 @@
                                         <tr>
                                             <th>#</th>
                                             <th>[[#{categoria.descripcion}]]</th>
+                                            <th>[[#{categoria.rutaImagen}]]</th>
                                             <th>[[#{categoria.activo}]]</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr th:each="c : ${categorias}">
                                             <td>[[${c.idCategoria}]]</td>
                                             <td>[[${c.descripcion}]]</td>
-                                            <td>[[${c.activo}]]</td>
                                             <td>
-                                                <img th: src="@{${c.rutaImagen}}"
+                                                <img th:src="@{${c.rutaImagen}}"
                                                      height="75"
                                                      alt="no data"/></td>
                                             <td>[[${c.activo}]]</td>
@@ -111,7 +120,7 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- 4 seccion para modificar una categoria -->
         <section th:fragment="editarCategoria">
             <div class="row">
@@ -119,10 +128,61 @@
                 <div class="col-md-8">
                     <form th:action="@{/categoria/guardar}"
                           th:object="${categoria}"
-                          method="post">
-                        
+                          method="post"
+                          class="was-validated"
+                          enctype="multipart/form-data">
+                        <input type="hidden" name="idCategoria" th:field="*{idCategoria}"/>
+                        <input type="hidden" name="rutaImagen" th:field="*{rutaImagen}"/>
+                        <div class="row py-4 mb-4 bg-light">
+                            <div class="col-md-4 d-grip">
+                                <a th:href="@{/categoria/listado}" class="btn btn-primary">
+                                    <i class="fas fa-arrow-left"></i> [[#{accion.regresar}]]
+                                </a>
+                            </div>
+
+                            <div class="col-md-4 d-grip">
+                                <a th:href="@{/categoria/eliminar}+${categoria.idCategoria}"
+                                   class="btn btn-primary">
+                                    <i class="fas fa-trash"></i> [[#{accion.eliminar}]]
+                                </a>
+                            </div>
+
+                            <div class="col-md-4 d-grip">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-check"></i> [[#{accion.guardar}]]
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label>[[#{categoria.descripcion}]]</label>
+                                        <input type="text" class="form-control"
+                                               name="descripcion"
+                                               th:field="*{descripcion}"
+                                               required="true"/>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>[[#{categoria.activo}]]</label>
+                                        <input type="checkbox" class="form-check-input"
+                                               name="activo"/>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label>[[#{categoria.rutaImagen}]]</label>
+                                        <input type="file" class="form-control"
+                                               onchange="readURL(this);"
+                                               name="imagenFile"/>
+                                        <img id="blah" src="#" alt="no data" height="200"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
-            </div>
+                </div>
         </section>
     </body>
 </html>
