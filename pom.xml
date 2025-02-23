@@ -14,7 +14,7 @@
     <name>tienda</name>
     <description>Proyecto Tienda Lunes noche IC 2025</description>
     <properties>
-        <java.version>23</java.version>
+        <java.version>21</java.version>
         <maven.compiler.release>17</maven.compiler.release>
     </properties>
     <dependencies>
@@ -74,6 +74,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.firebase</groupId>
+            <artifactId>firebase-admin</artifactId>
+            <version>9.4.3</version>
         </dependency>
     </dependencies>
 
