@@ -46,7 +46,7 @@
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label>[[#{producto.categoria}]]</label>
-                                    <select name="idCategoria"
+                                    <select name="categoria.idCategoria"
                                             class="form-control">
                                         <option th:each="c:${categorias}"
                                                 th:value="${c.idCategoria}">
@@ -125,24 +125,26 @@
                                             <th>[[#{producto.descripcion}]]</th>
                                             <th>[[#{producto.rutaImagen}]]</th>
                                             <th>[[#{producto.activo}]]</th>
+                                            <th>[[#{producto.categoria}]]</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="c : ${productos}">
-                                            <td>[[${c.idProducto}]]</td>
-                                            <td>[[${c.descripcion}]]</td>
+                                        <tr th:each="p : ${productos}">
+                                            <td>[[${p.idProducto}]]</td>
+                                            <td>[[${p.descripcion}]]</td>
                                             <td>
-                                                <img th:src="@{${c.rutaImagen}}"
+                                                <img th:src="@{${p.rutaImagen}}"
                                                      height="75"
                                                      alt="no data"/></td>
-                                            <td>[[${c.activo}]]</td>
+                                            <td>[[${p.activo}]]</td>
+                                            <td>[[${p.categoria.descripcion}]]</td>
                                             <td>
-                                                <a th:href="@{/producto/eliminar/}+${c.idProducto}"
+                                                <a th:href="@{/producto/eliminar/}+${p.idProducto}"
                                                    class="btn btn-danger">
                                                     <i class="fas fa-trash"></i> [[#{accion.eliminar}]]</a>
 
-                                                <a th:href="@{/producto/modificar/}+${c.idProducto}"
+                                                <a th:href="@{/producto/modificar/}+${p.idProducto}"
                                                    class="btn btn-success">
                                                     <i class="fas fa-pencil"></i> [[#{accion.actualizar}]]</a>
                                             </td>
@@ -196,8 +198,8 @@
 
                                     <div class="mb-3">
                                         <label>[[#{producto.categoria}]]</label>
-                                        <select name="idCategoria"
-                                                th:field="*{idCategoria}"
+                                        <select name="categoria.idCategoria"
+                                                th:field="*{categoria.idCategoria}"
                                                 class="form-control">
                                             <option th:each="c:${categorias}"
                                                     th:value="${c.idCategoria}">
