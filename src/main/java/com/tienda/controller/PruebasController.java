@@ -85,5 +85,13 @@ public class PruebasController {
         return "/pruebas/listado2";
     }
     
-    
+    @PostMapping("/query4")
+    public String consulta4(
+            @RequestParam("descripcion") String descripcion,
+            Model model) {
+        var productos = productoService.consultaAmpliada(descripcion);
+        model.addAttribute("productos", productos);
+        model.addAttribute("descripcion", descripcion);
+        return "/pruebas/listado2";
+    }
 }

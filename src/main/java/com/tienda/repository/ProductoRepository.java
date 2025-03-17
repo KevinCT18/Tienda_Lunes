@@ -31,4 +31,10 @@ public interface ProductoRepository extends JpaRepository<Producto,Long>{
     public List<Producto> consultaSQL(
             @Param("precioInf") double precioInf, 
             @Param("precioSup") double precioSup);
+    
+    //Se crea una consulta ampliada que filtra los productos por descripción y
+    //los ordena alfabéticamente
+    public List<Producto> 
+        findByDescripcionContainingIgnoreCaseOrderByDescripcion(
+                String descripcion);
 }
