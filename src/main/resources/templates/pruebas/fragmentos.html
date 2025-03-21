@@ -67,12 +67,12 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- 3 sección donde se muestra los filtros para los productos-->
         <section th:fragment="filtros" class="p-4">
             <div class="row p-2">
                 <div class="col-md-1"></div>
-                
+
                 <div class="col-md-3">
                     <form method="post"
                           th:action="@{/pruebas/query1}"
@@ -108,7 +108,7 @@
                         </div>
                     </form>
                 </div>
-                
+
                 <div class="col-md-3">
                     <form method="post"
                           th:action="@{/pruebas/query2}"
@@ -144,7 +144,7 @@
                         </div>
                     </form>
                 </div>
-                
+
                 <div class="col-md-3">
                     <form method="post"
                           th:action="@{/pruebas/query3}"
@@ -180,42 +180,21 @@
                         </div>
                     </form>
                 </div>
-                //Search bar
-                <div class="col-md-3">
-                    <form method="post"
-                          th:action="@{/pruebas/query1}"
-                          class="was-validated">
-                        <div class="card">
-                            <div class="card-header bg-primary text-white text-center">
-                                <h5 class="card-title">[[#{pruebas.ampliadas}]]</h5>
-                            </div>
-                            <div class="card-body">
-                                <div clas="mb-3">
-                                    <label>[[#{pruebas.precio.inferior}]]</label>
-                                    <input type="number"
-                                           class="form-control"
-                                           th:value="${precioInf}"
-                                           th:name="precioInf"
-                                           required="true"/>
-                                </div>
-                                <div clas="mb-3">
-                                    <label>[[#{pruebas.precio.superior}]]</label>
-                                    <input type="number"
-                                           class="form-control"
-                                           th:value="${precioSup}"
-                                           th:name="precioSup"
-                                           required="true"/>
-                                </div>
-                            </div>
-                            <div class="card-footer text-center">
-                                <button type="submit"
-                                        class="btn btn-primary">
-                                    <i class="fas fa-check"></i> [[#{pruebas.ampliadas}]]
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                <!--Search bar-->
+                <form method="post"
+                      th:action="@{/pruebas/query4}"
+                      class="was-validated">
+                    <div class="d-flex justify-content-center align-items-center" role="search">
+                        <input type="text"
+                               class="form-control me-2 w-50"
+                               th:value="${descripcion}"
+                               th:name="descripcion"
+                               placeholder="Search"
+                               required="true"/>
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </div>
+                </form>
+
             </div>
         </section>
 

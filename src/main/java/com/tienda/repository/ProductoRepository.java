@@ -16,7 +16,7 @@ public interface ProductoRepository extends JpaRepository<Producto,Long>{
     //Se crea una consulta JPQL que filtra los productos entre un rango de 
     //precios y los ordena por precio 
     @Query(value="SELECT a FROM Producto a where a.precio "
-            + "+BETWEEN :precioInf and :precioSup "
+            + "BETWEEN :precioInf and :precioSup "
             + "ORDER BY a.precio")
     public List<Producto> consultaJPQL(
             @Param("precioInf") double precioInf, 
@@ -26,7 +26,7 @@ public interface ProductoRepository extends JpaRepository<Producto,Long>{
     //precios y los ordena por precio 
     @Query(nativeQuery = true, 
             value="SELECT * FROM producto a where a.precio "
-            + "+BETWEEN :precioInf and :precioSup "
+            + "BETWEEN :precioInf and :precioSup "
             + "ORDER BY a.precio")
     public List<Producto> consultaSQL(
             @Param("precioInf") double precioInf, 
