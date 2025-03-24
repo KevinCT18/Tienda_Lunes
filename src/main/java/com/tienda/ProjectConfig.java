@@ -1,13 +1,20 @@
 package com.tienda;
 
+import com.tienda.domain.Ruta;
+import com.tienda.service.RutaPermitService;
+import com.tienda.service.RutaService;
+import java.util.List;
 import java.util.Locale;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.LocaleResolver;
@@ -63,54 +70,92 @@ public class ProjectConfig implements WebMvcConfigurer {
         registro.addViewController("/registro/nuevo").setViewName("/registro/nuevo");
     }
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http.authorizeHttpRequests((request) -> request.requestMatchers("/",
+//                "/index",
+//                "/error/**",
+//                "/carrito/**",
+//                "/reportes/**",
+//                "/registro/**",
+//                "/fav/**",
+//                "/js/**",
+//                "/webjars/**").permitAll()
+//                .requestMatchers("/producto/nuevo",
+//                        "/producto/guardar",
+//                        "/producto/eliminar/**",
+//                        "/producto/modificar/**",
+//                        "/categoria/nuevo",
+//                        "/categoria/guardar",
+//                        "/categoria/eliminar/**",
+//                        "/categoria/modificar/**").hasRole("ADMIN")
+//                .requestMatchers("/producto/listado",
+//                        "/categoria/listado",
+//                        "/pruebas/**").hasRole("VENDEDOR")
+//                .requestMatchers("/facturar/carrito").hasRole("USER"))
+//                .formLogin((form) -> form
+//                .loginPage("/login").permitAll())
+//                .logout((logout) -> logout.permitAll());
+//        return http.build();
+//    }
+    //Se crean usuarios en memoria 
+//    @Bean
+//    public UserDetailsService users() {
+//        UserDetails admin = User.builder()
+//                .username("juan")
+//                .password("{noop}123")
+//                .roles("USER", "VENDEDOR", "ADMIN")
+//                .build();
+//
+//        UserDetails vendedor = User.builder()
+//                .username("rebeca")
+//                .password("{noop}456")
+//                .roles("USER", "VENDEDOR")
+//                .build();
+//
+//        UserDetails usuario = User.builder()
+//                .username("pedro")
+//                .password("{noop}789")
+//                .roles("USER")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(admin, vendedor, usuario);
+//    }
+    
+    @Autowired
+    private RutaPermitService rutaPermitService;
+    @Autowired
+    private RutaService rutaService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((request) -> request.requestMatchers("/",
-                "/index",
-                "/error/**",
-                "/carrito/**",
-                "/reportes/**",
-                "/registro/**",
-                "/js/**",
-                "/webjars/**").permitAll()
-                .requestMatchers("/producto/nuevo",
-                        "/producto/guardar",
-                        "/producto/eliminar/**",
-                        "/producto/modificar/**",
-                        "/categoria/nuevo",
-                        "/categoria/guardar",
-                        "/categoria/eliminar/**",
-                        "/categoria/modificar/**").hasRole("ADMIN")
-                .requestMatchers("/producto/listado",
-                        "/categoria/listado",
-                        "/pruebas/**").hasRole("VENDEDOR")
-                .requestMatchers("/facturar/carrito").hasRole("USER"))
+
+        String[] rutasPermit = rutaPermitService.getRutaPermitsString();
+        List<Ruta> rutas = rutaService.getRutas();
+
+        http.authorizeHttpRequests((request) -> {
+            request
+                    .requestMatchers(rutasPermit).permitAll();
+            for (Ruta ruta : rutas) {
+                System.out.println(ruta.getPatron() + ":" + ruta.getRolName());
+                request
+                        .requestMatchers(ruta.getPatron())
+                        .hasRole(ruta.getRolName());
+            }
+        }
+        )
                 .formLogin((form) -> form
                 .loginPage("/login").permitAll())
                 .logout((logout) -> logout.permitAll());
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService users() {
-        UserDetails admin = User.builder()
-                .username("juan")
-                .password("{noop}123")
-                .roles("USER", "VENDEDOR", "ADMIN")
-                .build();
+    @Autowired
+    private UserDetailsService userDetailsService;
 
-        UserDetails vendedor = User.builder()
-                .username("rebeca")
-                .password("{noop}456")
-                .roles("USER", "VENDEDOR")
-                .build();
-
-        UserDetails usuario = User.builder()
-                .username("pedro")
-                .password("{noop}789")
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin, vendedor, usuario);
+    @Autowired
+    public void configurerGlobal(AuthenticationManagerBuilder build) throws Exception {
+        build.userDetailsService(userDetailsService)
+                .passwordEncoder(new BCryptPasswordEncoder());
     }
 }

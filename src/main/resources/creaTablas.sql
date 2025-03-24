@@ -207,6 +207,7 @@ INSERT INTO ruta_permit (patron) VALUES
 ('/errores/**'),
 ('/carrito/**'),
 ('/registro/**'),
+('/fav/**'),
 ('/js/**'),
 ('/webjars/**');
 
