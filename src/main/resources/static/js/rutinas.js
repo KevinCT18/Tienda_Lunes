@@ -10,3 +10,15 @@ function readURL(input) {
     }
 }
 
+// Esta función agrega al carrito un producto seleccionado en la página principal
+function addCart(formulario) {
+    //window.alert("está ingresando...");
+    var idProducto = formulario.elements[0].value;
+    var existencias = formulario.elements[1].value;
+    if (existencias > 0) {
+        var ruta = "/carrito/agregar/" + idProducto;
+        $("#resultBlock").load(ruta);
+    } else {
+        window.alert("No hay existencias...");
+    }
+}

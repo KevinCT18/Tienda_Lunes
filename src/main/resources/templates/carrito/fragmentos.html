@@ -1,0 +1,23 @@
+<!DOCKTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <head th:replace="~{layout/plantilla :: head}">
+        <title> Pruebas </title> 
+        <meta charset="UTF-8"/> 
+    </head>
+    <body>
+
+        <!-- 1 fragmento para ver el botón del carrito de compras -->
+        <div th:fragment="verCarrito" 
+             th:unless="${#lists.isEmpty(listaItems)}">
+
+            <form action="/carrito/listado">
+                <button type="submit"
+                        class="btn btn-primary">
+                    <i class="fas fa-cart-plus"></i> ([[${listaTotal}]]) ¢[[${totalVenta}]]
+                </button>
+            </form>
+        </div>
+    </body>
+</html>
