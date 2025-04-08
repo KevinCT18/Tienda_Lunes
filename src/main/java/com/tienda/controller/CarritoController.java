@@ -17,10 +17,10 @@ public class CarritoController {
 
     @Autowired
     private ItemService itemService;
-    
+
     @Autowired
     private ProductoService productoService;
-    
+
     @GetMapping("/agregar/{idProducto}")
     public ModelAndView agregar(Model model, Item item) {
         Item item2 = itemService.getItem(item);
@@ -35,7 +35,30 @@ public class CarritoController {
         model.addAttribute("listaItems", lista);
         model.addAttribute("listaTotal", lista.size());
         model.addAttribute("totalVenta", totalVenta);
-        
+
         return new ModelAndView("/carrito/fragmentos :: verCarrito");
+    }
+
+    @GetMapping("/listado")
+    public String listado(Model model) {
+        var lista = itemService.getItems();
+        var totalCompra = itemService.getTotal();
+        model.addAttribute("listaItems", lista);
+        model.addAttribute("totalCompra", totalCompra);
+
+        return "/carrito/listado";
+    }
+    
+    @GetMapping("/eliminar/{idProducto}")
+    public String eliminar(Model model, Item item) {
+        itemService.delete(item);
+        return "redirect:/carrito/listado";
+    }
+    
+    @GetMapping("/modificar/{idProducto}")
+    public String modificar(Model model, Item item) {
+        item = itemService.getItem(item);
+        model.addAttribute("item", item);
+        return "/carrito/modifica";
     }
 }
