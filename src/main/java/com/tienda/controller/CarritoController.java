@@ -35,7 +35,6 @@ public class CarritoController {
         model.addAttribute("listaItems", lista);
         model.addAttribute("listaTotal", lista.size());
         model.addAttribute("totalVenta", totalVenta);
-
         return new ModelAndView("/carrito/fragmentos :: verCarrito");
     }
 
@@ -45,7 +44,6 @@ public class CarritoController {
         var totalCompra = itemService.getTotal();
         model.addAttribute("listaItems", lista);
         model.addAttribute("totalCompra", totalCompra);
-
         return "/carrito/listado";
     }
     
@@ -60,5 +58,11 @@ public class CarritoController {
         item = itemService.getItem(item);
         model.addAttribute("item", item);
         return "/carrito/modifica";
+    }
+    
+    @GetMapping("/guardar")
+    public String guardar(Item item) {
+        itemService.update(item);
+        return "redirect:/carrito/listado";
     }
 }

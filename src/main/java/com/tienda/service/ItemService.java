@@ -32,7 +32,7 @@ public class ItemService {
     @Autowired
     private VentaRepository ventaRepository;
 
-    //Este método suma 1 al item que queremos comprar, crea la lista si no exite
+    //Este método suma 1 al item que queremos comprar, crea la lista si no existe
     public void save(Item item) {
         @SuppressWarnings("unchecked")
         List<Item> lista = (List) session.getAttribute("listaItems");
@@ -108,7 +108,7 @@ public class ItemService {
                     break;
                 }
             }
-            if (existe) {//Si existe lo elimino
+            if (existe) { //Si existe lo elimino
                 lista.remove(posicion);
                 session.setAttribute("listaItems", lista);
             }
@@ -189,5 +189,4 @@ public class ItemService {
             listaItems.clear();
         }
     }
-
 }
